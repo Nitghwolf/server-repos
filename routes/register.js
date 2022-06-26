@@ -26,9 +26,18 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.post("/login", async (req, res) => {
   try{
+    const { git_nick, password } = req.body;
+    console.log(req.body)
+    const existingUser = await User.findOne({ where: { git_nick: git_nick } });
 
+    if (existingUser && await bcrypt.compare(password, existingUser.password)) {
+      req.session.userId = existingUser.id;
+      res.send({name: existingUser.name, git_nick:existingUser.git_nick});
+    } else {
+      res.send({ message: false });
+    }
   }
   catch(error){
     console.log(error);
