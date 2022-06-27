@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
 
     if (existingUser && await bcrypt.compare(password, existingUser.password)) {
       req.session.userId = existingUser.id;
-      res.send({name: existingUser.name, git_nick:existingUser.git_nick});
+      res.send({name: existingUser.name, git_nick:existingUser.git_nick, message: true });
     } else {
       res.send({ message: false });
     }
